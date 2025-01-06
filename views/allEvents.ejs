@@ -1,0 +1,97 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<form action="/events/new" method="get" class="create-event-form">
+  <button class="btn-create-event">New Event</button>
+</form>
+
+<div class="events-container">
+  <% for(event of events) { %>
+    <div class="event-card">
+      <h2 class="event-title"><%= event.title %></h2>
+      <p class="event-description"><%= event.description %></p>
+      <p class="event-date-location"><%= event.date.toDateString() %> at <%= event.location %></p>
+      <p class="event-organizer">Organized by: <%= event.createdBy.username %></p>
+      <a href="/events/<%= event._id %>" class="btn-view-details">View Details</a>
+    </div>
+  <% } %>
+</div>
+
+<style>
+  .create-event-form {
+    margin-bottom: 20px;
+    text-align: right;
+  }
+
+  .btn-create-event {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-create-event:hover {
+    background-color: #0056b3;
+  }
+
+  .events-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+  }
+
+  .event-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+  }
+
+  .event-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .event-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #343a40;
+  }
+
+  .event-description {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #6c757d;
+  }
+
+  .event-date-location {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #495057;
+  }
+
+  .event-organizer {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: #495057;
+  }
+
+  .btn-view-details {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-view-details:hover {
+    background-color: #218838;
+  }
+</style>

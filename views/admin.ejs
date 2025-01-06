@@ -1,0 +1,162 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Admin Dashboard</h1>
+
+        <!-- Users Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Users</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Graduation Year</th>
+                            <th>Field of Study</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach((user, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= user.username %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.graduationYear %></td>
+                                <td><%= user.fieldOfStudy %></td>
+                                <td>
+                                    <form action="/admin/users/<%= user._id %>/delete?_method=delete" method="post">
+                                      <button class="btn btn-warning">delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Posts Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Posts</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Posted At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% posts.forEach((post, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= post.title %></td>
+                                <td><%= post.content.substring(0, 50) %>...</td>
+                                <td><%= post.postedAt.toDateString() %></td>
+                                <td>
+                                    <form action="/admin/posts/<%= post._id %>/delete?_method=delete" method="post">
+                                        <button class="btn btn-warning">delete</button>
+                                      </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Jobs Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Jobs</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>Experience</th>
+                            <th>Posted At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% jobs.forEach((job, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= job.title %></td>
+                                <td><%= job.company %></td>
+                                <td><%= job.location %></td>
+                                <td><%= job.experience %> years</td>
+                                <td><%= job.postedAt.toDateString() %></td>
+                                <td>
+                                    <form action="/admin/jobs/<%= job._id %>/delete?_method=delete" method="post">
+                                        <button class="btn btn-warning">delete</button>
+                                      </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Success Stories Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Success Stories</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Published At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% stories.forEach((story, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= story.title %></td>
+                                <td><%= story.content.substring(0, 50) %>...</td>
+                                <td><%= story.publishedAt.toDateString() %></td>
+                                <td>
+                                    <form action="/admin/stories/<%= story._id %>/delete?_method=delete" method="post">
+                                        <button class="btn btn-warning">delete</button>
+                                      </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

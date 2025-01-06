@@ -1,0 +1,140 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      margin-top: 80px; /* Adjust this value based on your navbar height */
+    }
+
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px 10px 0 0;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+
+    .description {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .form-group button {
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+
+    .terms {
+      margin-top: 20px;
+      text-align: left;
+      color: #333;
+      font-size: 0.9rem;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+
+    .terms h3 {
+      color: #007bff;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #888;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Support Our Students</h1>
+    </header>
+    <p class="description">Your generous contributions help fund student research projects, support academic development, and enhance overall college well-being. By donating, you contribute to the growth and success of our students and help create a better learning environment for everyone.</p>
+    <form action="/create-order" method="POST">
+      <div class="form-group">
+        <label for="amount">Donation Amount</label>
+        <input type="number" id="amount" name="amount" placeholder="Enter donation amount" required />
+      </div>
+      <div class="form-group">
+        <button type="submit">Donate</button>
+      </div>
+    </form>
+    <div class="terms">
+      <h3>Terms and Conditions</h3>
+      <p>
+        All donations are final and non-refundable. Donations will be used exclusively for the purposes outlined on this page. By proceeding with the donation, you agree to our terms and conditions and privacy policy. If you have any questions, please contact us at [contact email].
+      </p>
+    </div>
+    <div class="footer">
+      Thank you for your support!
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Chat</title>
+    <style>
+        /* Styles for video chat */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        video {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ddd;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Chat</h1>
+    <div class="video-container">
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+    <button id="startCall">Start Call</button>
+    <button id="endCall">End Call</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        const startCallBtn = document.getElementById('startCall');
+        const endCallBtn = document.getElementById('endCall');
+        let localStream;
+        let peerConnection;
+        const room = '<%= roomId %>';
+
+        const configuration = {
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+        };
+
+        const constraints = {
+            video: true,
+            audio: true
+        };
+
+        // Start call
+        startCallBtn.addEventListener('click', () => {
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    localStream = stream;
+                    localVideo.srcObject = stream;
+                    peerConnection = new RTCPeerConnection(configuration);
+
+                    peerConnection.addStream(localStream);
+
+                    peerConnection.onaddstream = event => {
+                        remoteVideo.srcObject = event.stream;
+                    };
+
+                    peerConnection.onicecandidate = event => {
+                        if (event.candidate) {
+                            socket.emit('signal', {
+                                room: room,
+                                candidate: event.candidate
+                            });
+                        }
+                    };
+
+                    socket.emit('joinRoom', room);
+                })
+                .catch(error => console.error('Error accessing media devices.', error));
+        });
+
+        // End call
+        endCallBtn.addEventListener('click', () => {
+            socket.emit('leaveRoom', room);
+            if (peerConnection) {
+                peerConnection.close();
+            }
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+        });
+
+        // Handle incoming signals
+        socket.on('signal', data => {
+            if (data.sdp) {
+                peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp))
+                    .then(() => {
+                        if (data.sdp.type === 'offer') {
+                            return peerConnection.createAnswer();
+                        }
+                    })
+                    .then(answer => peerConnection.setLocalDescription(answer))
+                    .then(() => {
+                        socket.emit('signal', {
+                            room: room,
+                            sdp: peerConnection.localDescription
+                        });
+                    })
+                    .catch(error => console.error('Error handling SDP', error));
+            } else if (data.candidate) {
+                peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate))
+                    .catch(error => console.error('Error adding ICE candidate', error));
+            }
+        });
+    </script>
+</body>
+</html>

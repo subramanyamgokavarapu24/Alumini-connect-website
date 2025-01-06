@@ -1,0 +1,197 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= user.username %> - Details</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* User detail page container */
+        .user-detail-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .user-detail-container {
+            max-width: 850px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* User detail header */
+        .user-detail-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .user-detail-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 123, 255, 0.1), transparent);
+            z-index: -1;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .user-detail-header img {
+            border-radius: 50%;
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 4px solid #007bff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .user-detail-header img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-detail-header h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            color: #333;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* User detail content */
+        .user-detail-content {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .user-detail-content p {
+            font-size: 1rem;
+            color: #555;
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .user-detail-content h2 {
+            font-size: 1.5rem;
+            color: #007bff;
+            margin-top: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            position: relative;
+            text-align: center;
+        }
+
+        .user-detail-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 40px;
+            height: 4px;
+            background: #007bff;
+            border-radius: 2px;
+            transform: translateX(-50%);
+        }
+
+        .user-detail-content .section {
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="user-detail-page">
+        <div class="user-detail-container">
+            <div class="user-detail-header">
+                <img src="<%= user.profilePicture.url %>" alt="<%= user.username %> profile picture">
+                <h1><%= user.username %></h1>
+            </div>
+            <div class="user-detail-content">
+                <div class="section">
+                    <h2>Bio</h2>
+                    <p><%= user.bio %></p>
+                </div>
+                <div class="section">
+                    <h2>Details</h2>
+                    <p><strong>Email:</strong> <%= user.email %></p>
+                    <p><strong>Graduation Year:</strong> <%= user.graduationYear %></p>
+                    <p><strong>Field of Study:</strong> <%= user.fieldOfStudy %></p>
+                    <p><strong>Industry:</strong> <%= user.industry %></p>
+                    <p><strong>Location:</strong> <%= user.location %></p>
+                    <p><strong>Date Joined:</strong> <%= user.dateJoined.toDateString() %></p>
+                </div>
+            </div>
+            <a href="/users" class="back-link">Back to all users</a>
+            <form action="/chat/<%= user._id %>" method="GET">
+                <% if(currentUser){ %>
+                <button type="submit" class="btn">Message</button>
+                <% } %>
+            </form>
+            <form action="/video-chat/<%= user._id %>" method="GET">
+                <% if(currentUser){ %>
+                    <button type="submit" class="btn">Video Chat</button>
+                <% } %>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

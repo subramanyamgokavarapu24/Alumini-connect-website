@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Donation</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.container {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-radius: 8px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Complete Your Donation</h1>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      const options = {
+        key: "<%= razorpayKey %>",
+        amount: "<%= amount %>",
+        currency: "<%= currency %>",
+        name: "Your Organization Name",
+        description: "Donation",
+        order_id: "<%= orderId %>",
+        handler: function (response) {
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+          // You can redirect to a success page or perform further actions here
+        },
+        prefill: {
+          name: "Your Name",
+          email: "your.email@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    </script>
+  </div>
+</body>
+</html>

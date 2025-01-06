@@ -1,0 +1,104 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Feedbacks</title>
+    <style>
+        body {
+            background-color: #f4f7f9;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            padding-top: 80px; /* Adjust based on your navbar's height */
+        }
+        .content-container {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        .feedback {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feedback:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        h3, h4 {
+            color: #34495e;
+        }
+        h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        p.date-submitted {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .btn {
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            padding: 10px 15px;
+            color: white;
+            font-size: 16px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .new-feedback-button {
+            display: block;
+            width: max-content;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <div class="new-feedback-button">
+            <a href="/feedback/new" class="btn btn-success">New Feedback</a>
+        </div>
+        <h1>All Feedbacks About the College</h1>
+        <% for(feedback of feedbacks) { %>
+            <div class="feedback">
+                <h3>Feedback by: <%= feedback.userId.username %></h3>
+                <h4>Title: <%= feedback.title %></h4>
+                <p>Message: <%= feedback.message.length > 100 ? feedback.message.substring(0, 100) + '...' : feedback.message %></p>
+                <p class="date-submitted">Date Submitted: <%= feedback.dateSubmitted %></p>
+                <a href="/feedback/<%= feedback._id %>" class="btn btn-primary">View Details</a>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

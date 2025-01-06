@@ -1,0 +1,117 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Posts</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f5f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            margin-top: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        h2 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .post-card {
+            background-color: #ffffff;
+            border: 1px solid #e1e3e8;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .post-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .post-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #e1e3e8;
+        }
+        .post-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .post-title {
+            font-size: 1.6em;
+            color: #0073b1; /* Change this color as needed */
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            font-weight: 600;
+        }
+        .post-title:hover {
+            color: #0056b3; /* Change this color as needed */
+        }
+        .post-meta {
+            font-size: 0.875em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .post-description {
+            font-size: 1em;
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .btn{
+            margin: 20px;
+        }
+        @media (max-width: 768px) {
+            .post-title {
+                font-size: 1.4em;
+            }
+            .post-card img {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>All Posts</h2>
+        <form action="/users/<%=currentUser._id%>/newpost" method="get">
+      <button class="btn btn-primary">new post</button>
+        </form>
+        <% posts.forEach(function(post) { %>
+            <div class="post-card">
+                <a href="/posts/<%= post._id %>">
+                    <% if (post.img) { %>
+                        <img src="<%= post.img.url %>" alt="Post Image">
+                    <% } %>
+                    <div class="post-content">
+                        <div class="post-title"><%= post.title %></div>
+                        <% if (post.meta) { %>
+                            <div class="post-meta"><%= post.meta %></div>
+                        <% } %>
+                        <div class="post-description"><%= post.description %></div>
+                    </div>
+                </a>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="event-detail-container">
+  <!-- Back button, title, description, etc. -->
+  <a href="javascript:history.back()" class="btn-back">Back</a>
+  <h1 class="event-title"><%= event.title %></h1>
+  <p class="event-description"><%= event.description %></p>
+  <p class="event-date-location"><%= event.date.toDateString() %> at <%= event.location %></p>
+  <p class="event-organizer">Organized by: <%= event.createdBy.username %></p>
+  
+  <h3 class="attendees-heading">Attendees:</h3>
+  <ul class="attendees-list">
+    <% event.attendees.forEach(attendee => { %>
+      <li class="attendee"><%= attendee.username %></li>
+    <% }) %>
+  </ul>
+
+  <% if (currentUser) { %>
+    <form action="/events/<%= event._id %>/register" method="POST" class="form-register">
+      <button type="submit" class="btn-register">Register</button>
+    </form>
+  <% } %>
+
+  <% if (currentUser && currentUser._id.toString() === event.createdBy._id.toString()) { %>
+    <form action="/events/<%= event._id %>?_method=DELETE" method="POST" class="form-delete">
+      <button type="submit" class="btn-delete">Delete Event</button>
+    </form>
+  <% } %>
+</div>
+
+<% if (new Date() > new Date(event.date) && event.attendees.includes(currentUser._id)) { %>
+  <form action="/events/<%= event._id %>/feedback" method="POST" class="form-feedback">
+    <textarea name="message" class="feedback-textarea" placeholder="Write your feedback here..." required></textarea>
+    <button type="submit" class="btn-submit-feedback">Submit Feedback</button>
+  </form>
+<% } else { %>
+  <p class="feedback-message">You cannot submit feedback at this time.</p>
+<% } %>
+
+<h3 class="feedback-heading">Feedbacks:</h3>
+<% if (event.feedbacks.length > 0) { %>
+  <ul class="feedback-list">
+    <% event.feedbacks.forEach(feedback => { %>
+      <li class="feedback-item">
+        <strong><%= feedback.user.username %></strong>: <%= feedback.message %>
+        <p class="feedback-date"><%= feedback.createdAt.toDateString() %></p>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No feedbacks yet. Be the first to submit!</p>
+<% } %>
+
+<style>
+  /* Container Styling */
+  .event-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  /* Back Button */
+  .btn-back {
+    color: #555;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    background-color: #e7e7e7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-back:hover {
+    background-color: #ddd;
+  }
+  
+  /* Event Title */
+  .event-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  /* Event Description */
+  .event-description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  /* Date and Location */
+  .event-date-location {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 20px;
+  }
+  
+  /* Organizer */
+  .event-organizer {
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  /* Attendees List */
+  .attendees-heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .attendees-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .attendee {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  /* Register and Delete Buttons */
+  .btn-register, .btn-delete {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-register:hover, .btn-delete:hover {
+    background-color: #218838;
+  }
+  
+  .btn-delete {
+    background-color: #dc3545;
+  }
+  
+  .btn-delete:hover {
+    background-color: #c82333;
+  }
+  
+  /* Feedback Form */
+  .form-feedback {
+    margin-top: 30px;
+  }
+  
+  .feedback-textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: none;
+  }
+  
+  .btn-submit-feedback {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-submit-feedback:hover {
+    background-color: #0069d9;
+  }
+  
+  .feedback-message {
+    color: #888;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  /* Feedback List */
+  .feedback-heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 40px;
+    color: #333;
+  }
+  
+  .feedback-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .feedback-item {
+    background-color: #f0f0f0;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .feedback-item strong {
+    color: #333;
+  }
+  
+  .feedback-date {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+  }
+  </style>
+  

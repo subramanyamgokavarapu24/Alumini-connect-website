@@ -1,0 +1,100 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-bottom: 1.5rem;
+            color: #343a40;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #495057;
+        }
+        .form-control {
+            border-radius: 0.25rem;
+            border-color: #ced4da;
+        }
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Sign Up Form</h2>
+        <form action="/signup" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3"> 
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" name="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3"> 
+                <label for="regno" class="form-label">registration number:</label>
+                <input type="text" name="regno" class="form-control" id="regno">
+            </div>
+            <div class="mb-3"> 
+                <label for="graduationYear" class="form-label">Graduation Year:</label>
+                <input type="number" name="graduationYear" class="form-control" id="graduationYear" required>
+            </div>
+            <div class="mb-3"> 
+                <label for="fieldOfStudy" class="form-label">Field Of Study:</label>
+                <input type="text" name="fieldOfStudy" class="form-control" id="fieldOfStudy" required>
+            </div>
+            <div class="mb-3"> 
+                <label for="industry" class="form-label">Industry:</label>
+                <input type="text" name="industry" class="form-control" id="industry">
+            </div>
+            <div class="mb-3"> 
+                <label for="location" class="form-label">Location:</label>
+                <input type="text" name="location" class="form-control" id="location" required>
+            </div>
+            <div class="mb-3"> 
+                <label for="profilePicture" class="form-label">Upload Profile Picture:</label>
+                <input type="file" name="profilePicture" class="form-control" id="profilePicture">
+            </div>
+            <div class="mb-3"> 
+                <label for="bio" class="form-label">Bio:</label>
+                <textarea name="bio" class="form-control" id="bio" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

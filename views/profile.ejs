@@ -1,0 +1,270 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= user.username %>'s Profile</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f2f5;
+      margin-top:30px;
+      padding: 0;
+      
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Profile Section */
+    .profile-header {
+      display: flex;
+      gap: 40px;
+      padding: 40px 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #007bff;
+    }
+
+    .profile-details {
+      flex: 1;
+    }
+
+    .profile-details h1 {
+      font-size: 2.4rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .profile-details p {
+      font-size: 1.1rem;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    .profile-actions {
+      margin-top: 20px;
+    }
+
+    .edit-profile-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-profile-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Content Section */
+    .content {
+      display: flex;
+      margin-top: 40px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      flex: 0.3;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-right: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      font-size: 18px;
+      color: #007bff;
+      padding: 10px;
+      display: block;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: #e9f0ff;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 0.7;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      font-size: 1.6rem;
+      color: #333;
+      margin-top: 0;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #666;
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    /* Post Images */
+    .card img {
+      max-width: 100%;
+      max-height: 200px; /* Adjust height to prevent overly large images */
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      margin-top: 40px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .content {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <img src="<%= user.profilePicture.url %>" alt="<%= user.username %>'s Profile Picture" class="profile-pic">
+      <div class="profile-details">
+        <h1><%= user.username %></h1>
+        <p><%= user.fieldOfStudy %>, Class of <%= user.graduationYear %></p>
+        <p><%= user.industry %>, <%= user.location %></p>
+        <p><%= user.bio %></p>
+
+        <div class="profile-actions">
+          <button class="edit-profile-btn">Edit Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="content">
+      <!-- Sidebar for navigation -->
+      <div class="sidebar">
+        <ul>
+          <li><a href="#posts">Posts</a></li>
+          <li><a href="#jobs">Jobs</a></li>
+          <li><a href="#stories">Success Stories</a></li>
+        </ul>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Posts Section -->
+        <div id="posts">
+          <h2>Posts</h2>
+          <% if (user.posts.length > 0) { %>
+            <% user.posts.forEach(post => { %>
+              <div class="card">
+                <h3><%= post.title %></h3>
+                <p><%= post.content %></p>
+                <% if (post.img && post.img.url) { %>
+                  <img src="<%= post.img.url %>" alt="<%= post.title %>">
+                <% } %>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p>No posts yet.</p>
+          <% } %>
+        </div>
+
+        <!-- Jobs Section -->
+        <div id="jobs">
+          <h2>Jobs</h2>
+          <% if (user.jobs.length > 0) { %>
+            <% user.jobs.forEach(job => { %>
+              <div class="card">
+                <h3><%= job.title %> at <%= job.company %></h3>
+                <p><%= job.description %></p>
+                <p>Location: <%= job.location %> | Experience: <%= job.experience %> years</p>
+                <a href="<%= job.link %>" target="_blank">Apply here</a>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p>No jobs posted yet.</p>
+          <% } %>
+        </div>
+
+        <!-- Success Stories Section -->
+        <div id="stories">
+          <h2>Success Stories</h2>
+          <% if (user.stories.length > 0) { %>
+            <% user.stories.forEach(story => { %>
+              <div class="card">
+                <h3><%= story.title %></h3>
+                <p><%= story.content %></p>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p>No success stories yet.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2024 Your Alumni Platform</p>
+  </div>
+</body>
+</html>
